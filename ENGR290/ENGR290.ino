@@ -1,17 +1,24 @@
-#include "US.h"
+/* ENGR290 Technical Assignement 1
+ * Samuel Besse 40088455
+ * 
+ * 
+ * 
+ */
+#include <Arduino.h>
 
-
+uint16_t distanceCnt = 0;
 uint16_t initialReading = 0;
 uint16_t finalReading = 0;
 uint8_t reading = 0;
-void PCI0_isr(void) { //Pin change interrupt is used because the input capture functionality of the timer can only be sensitive to one edge at a time
-    uint8_t cntL = TCNT1L; //important to read low byte first because of temp register
-    uint8_t cntH = TCNT1H;
+void PCI0_isr() { //Pin change interrupt is used because the input capture functionality of the timer can only be sensitive to one edge at a time
+//    uint8_t cntL = TCNT1L; //important to read low byte first because of temp register
+//    uint8_t cntH = TCNT1H;
+  uint16_t cnt = TCNT1; //read the 16 bit register of timer1 count
     if(!reading) {
-        initialReading = cntH << 8 | cntL;
+        initialReading = cnt;
         reading = 1;
     } else {
-        finalReading = cntH << 8 | cntL;
+        finalReading = cnt;
         reading = 0;
     }
 }
@@ -40,4 +47,16 @@ uint16_t getDistance() {
     } else {
         return (65535 - initialReading) + finalReading;
     }
+}
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  setupUS();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  distanceCnt = getDistance();
+  Serial.println(distanceCnt);
+  delay(80); //datasheet recommends at least 80ms between reads
 }
