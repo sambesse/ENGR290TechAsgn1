@@ -1,4 +1,6 @@
-int trigPin = 13;    //Trig
+#include <Arduino.h>
+
+int trigPin = 13;                     //Trig
 int echoPin = 3;    //Echo
 long duration, cm, inches;
 int LED_PIN=2;
@@ -10,7 +12,7 @@ void setup() {
 
  
   //Serial Port begin
-  Serial.begin (9600);
+  Serial.begin (115200);
   //Define inputs and outputs
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
