@@ -23,7 +23,7 @@ void setup() {
 
 void loop() {
   Serial.println(getIRDistance());
-  Serial.println(OCR2A);
+  //Serial.println(OCR2A);
   delay(500);
 }
 

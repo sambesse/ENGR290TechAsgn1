@@ -32,6 +32,7 @@ void loop()
 
   cm = (duration/2) / 29;
 // inches = (duration/2) / 74; 
+  Serial.println(duration);
   if(cm<40){
       Serial.print(inches);
   Serial.print("in, ");
