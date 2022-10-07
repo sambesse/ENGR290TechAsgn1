@@ -52,6 +52,7 @@ void loop() {
     duration = pulseIn(echoPin, HIGH);
     if (duration <= 875 || duration >= 2282) {
       PORTB |= 1 << 5;
+      delay(5);
     } else {
       PORTB &= ~(1 << 5);
     }
@@ -70,6 +71,7 @@ void loop() {
     Serial.print("cm");
     Serial.println();
     }
+    delay(50);
   }
 }
 
