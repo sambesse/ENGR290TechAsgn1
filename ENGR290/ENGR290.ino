@@ -23,7 +23,7 @@ void setup() {
   DDRD |= 1 << 3;
   ///PORTD |= 1 << 3;
   DDRB |= 1 << 5;
-  PORTB |= 1 << 5;
+  //PORTB |= 1 << 5;
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   Serial.begin(9600);
@@ -36,6 +36,11 @@ void loop() {
     Serial.println(getIRDistance());
     //Serial.println(OCR2A);
     OCR2A = ADC >> 2;
+    if (ADC <= 448 || ADC >= 813) {
+      PORTB |= 1 << 5;
+    } else {
+      PORTB &= ~(1 << 5);
+    }
     delay(50);
   } else {
     digitalWrite(trigPin, LOW);
@@ -45,6 +50,11 @@ void loop() {
     digitalWrite(trigPin, LOW);
   
     duration = pulseIn(echoPin, HIGH);
+    if (duration <= 875 || duration >= 2282) {
+      PORTB |= 1 << 5;
+    } else {
+      PORTB &= ~(1 << 5);
+    }
     if (duration < 65529) {
       OCR2A = (65530 - duration); 
     } else {
@@ -73,8 +83,8 @@ uint16_t getIRDistance() {
   ADCSRA |= 0x40; //start conversion
   while(ADCSRA & (1 << 6)) {//bit 6 is cleared when conversion is complete
     spinLock++;
-    Serial.println("spinning");
-    delay(500);
+    //Serial.println("spinning");
+    //delay(500);
   }
   //OCR2A = ADC >> 2;
   return ADC;
